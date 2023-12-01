@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<link href="styles.css"
+ rel="stylesheet">
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+<div class="container">
+    <h1>
+        PPF Calculator
+    </h1>
+
+    <div class="row">
+        <div class="col-xl-6">
+            <input type="text" id="txtData" class="form-control" placeholder="Enter Amount : 150000" /> <br />
+            <input type="text" id="txtData" class="form-control" placeholder="Enter Roi : 7.1" /> <br />
+            <select class="form-control" id="txtData">
+                <option>Please Select Years</option>
+                <option>15</option>
+                <option>20</option>
+                <option>25</option>
+                <option>30</option>
+            </select> <br />
+
+            <button class="btn btn-dark" id="btn">
+                Calculate
+            </button>
+
+            <p class="err-message"></p>
+        </div>
+
+        <div class="col-xl-6">
+            <h4>
+                Maturity Amount : <span></span>
+            </h4>
+            <h4>
+                Total Deposite : <span></span>
+            </h4>
+            <h4>
+                Total  Interest : <span></span>
+            </h4>
+        </div>
+    </div>
+
+    <h1>PPF CHART</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Opening Balance</th>
+                <th>Amount</th>
+                <th>Interest</th>
+                <th>Closing Balance</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-content">
+            
+        </tbody>
+    </table>
+
+</div>
+<script>
+
+    /*
+         var roi = 7.10;
+        var interest =  (opening_balance+amount) *  roi/100;
+        closing_balance = opening_balance+amount+interest;
+
+        year  opening_balance  amount    interest      closing_balance
+        ---------------------------------------------------------------------
+        1     0                150000    10650         160650
+        2     160650           150000    22056         332706
+        3     332706
+    */
+//DOM Event Handler
+document.querySelector("#btn").onclick = myfunc;
+
+function myfunc(){
+    // console.log('Test');
+    // console.log(document.querySelectorAll('#txtData'));
+
+    //Array Destruct
+    var[txt1,txt2,txt3] = document.querySelectorAll('#txtData');
+    // console.log(txt1 , txt1.value , typeof txt1.value);
+    // console.log(txt2,txt2.value);
+    // console.log(txt3,txt3.value);
+
+    var errmsg = '';
+
+    if(txt1.value=="" || isNaN(txt1.value) || txt2.value=="" || isNaN(txt2.value) || txt3.value=="" || isNaN(txt3.value)){
+        errmsg = "Only Numbers Allowed";
+    }
+    else{
+
+        var year = 1;
+        var opening_balance = 0;
+        var amount = Number(txt1.value);
+        var roi = Number(txt2.value);
+
+        while( year<=txt3.value){
+
+            var interest = Math.round( (opening_balance+amount) *  roi/100 );
+            var closing_balance = opening_balance+amount+interest;
+
+            console.log(year , opening_balance , amount , interest,closing_balance);
+
+            // console.log(document);
+            var cell1 = document.createElement("td");
+            // console.log(cell1);
+            cell1.innerText = year;
+
+            var cell2 = document.createElement("td");
+            // console.log(cell1);
+            cell2.innerText = opening_balance;
+
+            var cell3 = document.createElement("td");
+            // console.log(cell1);
+            cell3.innerText = amount;
+
+            var cell4 = document.createElement("td");
+            // console.log(cell1);
+            cell4.innerText = interest;
+
+            var cell5 = document.createElement("td");
+            // console.log(cell1);
+            cell5.innerText = closing_balance;
+
+            var trow = document.createElement("tr");
+            // console.log(typeof trow , typeof cell5 );
+
+            trow.append(cell1);
+            trow.append(cell2);
+            trow.append(cell3);
+            trow.append(cell4);
+            trow.append(cell5);
+
+            // console.log(trow);
+
+            document.getElementById('tbody-content').append(trow);
+
+            year = year+1;
+
+            opening_balance = closing_balance;
+
+        }
+        var total_deposited = Number(txt3.value)*amount
+        var interest_earned = closing_balance - total_deposited;
+        console.log('AFter For Loop' , closing_balance , total_deposited,interest_earned);
+
+        // console.log(document.getElementsByTagName('span'));
+        var[span1,span2,span3] = document.getElementsByTagName('span');
+
+        span1.innerHTML = closing_balance;
+        span2.innerHTML = total_deposited;
+        span3.innerHTML = interest_earned;
+    }
+
+    document.querySelector('.err-message').innerHTML = errmsg;
+}
+</script>
+</body>
+</html>
